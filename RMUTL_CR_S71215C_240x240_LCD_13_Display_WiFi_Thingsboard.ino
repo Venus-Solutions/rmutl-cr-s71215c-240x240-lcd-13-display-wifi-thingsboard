@@ -22,14 +22,14 @@ ThingsBoardSized<MAX_MESSAGE_SIZE> tb(espClient);           // Initialize Things
 
 //==================================================Optocoupler==================================================//
 
-#define OPT1 IO0                                            //  Config IO for optocoupler modules
-#define OPT2 IO2
-#define OPT3 IO4
-#define OPT4 IO6
-#define OPT5 IO8
-#define OPT6 IO10
-#define OPT7 IO3
-#define OPT8 IO5
+#define OPT0 IO0                                            //  Config IO for optocoupler modules
+#define OPT1 IO2
+#define OPT2 IO4
+#define OPT3 IO6
+#define OPT4 IO8
+#define OPT5 IO10
+#define OPT6 IO3
+#define OPT7 IO5
 
 bool q00 = 0;                                               //  Init q00 - q07 for reading PLC outputs Q0.0 - Q0.7
 bool q01 = 0;
@@ -42,7 +42,7 @@ bool q07 = 0;
 
 //==================================================LCD==================================================//
 
-Adafruit_ST7789 tft = Adafruit_ST7789(SLOT1_U);             //  Init 1.3inch TFT display at SLOT#1 2nd Floor
+Adafruit_ST7789 tft = Adafruit_ST7789(SLOT1);             //  Init 1.3inch TFT display at SLOT#1 2nd Floor
 
 //==================================================Wi-Fi==================================================//
 
@@ -120,6 +120,7 @@ void setup()
   Tony.begin();  
   delay(10);
   
+  Tony.pinMode(OPT0, INPUT);
   Tony.pinMode(OPT1, INPUT);
   Tony.pinMode(OPT2, INPUT);
   Tony.pinMode(OPT3, INPUT);
@@ -127,13 +128,12 @@ void setup()
   Tony.pinMode(OPT5, INPUT);
   Tony.pinMode(OPT6, INPUT);
   Tony.pinMode(OPT7, INPUT);
-  Tony.pinMode(OPT8, INPUT);
  
   Tony.pinMode(Relay_1, OUTPUT);
   Tony.pinMode(Relay_2, OUTPUT);
 
   tft.init(240, 240);                                       //  Init TFT display format
-  tft.setRotation(3);
+  tft.setRotation(0);
   tft.setCursor(0, 0);
   tft.fillScreen(ST77XX_BLACK);
   tft.setTextSize(3);
@@ -184,14 +184,14 @@ void loop()
   if (now - lastMeasure > interval){                                // Waiting for millis() event trigger
       lastMeasure = now;
 
-      q00 = !Tony.digitalRead(OPT1);                                // Reading optocoupler inputs
-      q01 = !Tony.digitalRead(OPT2);
-      q02 = !Tony.digitalRead(OPT3);
-      q03 = !Tony.digitalRead(OPT4);
-      q04 = !Tony.digitalRead(OPT5);
-      q05 = !Tony.digitalRead(OPT6);
-      q06 = !Tony.digitalRead(OPT7);
-      q07 = !Tony.digitalRead(OPT8);
+      q00 = !Tony.digitalRead(OPT0);                                // Reading optocoupler inputs
+      q01 = !Tony.digitalRead(OPT1);
+      q02 = !Tony.digitalRead(OPT2);
+      q03 = !Tony.digitalRead(OPT3);
+      q04 = !Tony.digitalRead(OPT4);
+      q05 = !Tony.digitalRead(OPT5);
+      q06 = !Tony.digitalRead(OPT6);
+      q07 = !Tony.digitalRead(OPT7);
 
       tb.sendAttributeBool("Q00", q00);                             // Sending boolean attribute to Thingsboard
       tb.sendAttributeBool("Q01", q01);
